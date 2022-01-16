@@ -1,0 +1,7 @@
+# How to create a new git bundle file (named after unix committer timestamp and abbreviated commit ID).
+cd REPOSUBDIR
+r=~/REALREPO
+(cd -- "$r" && git cat-file -p HEAD)
+(cd -- "$r" && git describe --always HEAD)
+d=$PWD && (cd -- "$r" && git bundle create "$d"/UXTS-COMMITID7 HEAD)
+ls -l

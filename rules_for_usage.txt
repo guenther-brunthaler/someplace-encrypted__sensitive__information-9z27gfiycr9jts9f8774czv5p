@@ -1,0 +1,59 @@
+Rules for using the encrypted files
+===================================
+v2022.16
+
+There are 4 layers of EncFs. Layer 4 is the outermost layer. Layer 1 is 
+the innermost layer. Only layer 1 contains application data. The other 
+layers just wrap one another onion-style.
+
+Because of design flaws in EncFS, only new files must be added to or 
+existing files may be deleted from Layer 1. Renaming is also allowed. 
+But no existing files must ever be changed!
+
+The outer layers must not contain any files with partially known 
+contents, such as the EncFS configuration files. Therefore, those files 
+have been moved out of the respecfive *.encfs-directory up to the 
+top-level project directory.
+
+When mounting the EncFs-layers, the pathnames of the configuration 
+files must be specified using the -c option.
+
+All layers use radix-62 based passwords consisting only of 
+alphanumerical ASCII characters. They all correspond to a key strength 
+of at least 256 bit and have been drawn from the combined (hashed) 
+output of /dev/urandom, haveged and /dev/hwrng (if available).
+
+The password files contain the password as a single line which includes 
+a newline character at the end which must be stripped when using the 
+--extpass option of EncFS for providing the contents of the password 
+files. This can be achieved by using the "tr -d '\n'" command for 
+output within the --extpass argument.
+
+The 4 password files required for unlocking the 4 EncFS layers are 
+encrypted by the "gbosslcrypt" script which can be found in my Git 
+repository with the abstract URL "tag:xworld.mine.nu,2009:" .concat. 
+"usr-local-bin-xworld-jv3gwuidf2ezyr5vbqavqtxyh.git". The encrypted 
+result can be found in the file "passwords.tgz.gbo". The file is not 
+integrity-protected and could therefore be manipulated. However, in 
+this case the passwords would be incorrect, and so the onion layers 
+would not mount correctly.
+
+Make sure you unpack the passwords only to a tmpfs or ramfs and that 
+the system does not swap to unencrypted backing store. One way to 
+ensure no sensitive information will be swapped out is to disable 
+swapping temporarily with "swapoff".
+
+The files actually contained within layer 1 are Git bundles for the 
+original repository.
+
+There is a subdirectory for every repository, and within those 
+subdirectories git bundles for incremental pulling will have been 
+created.
+
+Every such bundle file is named after the UNIX timestamp of the 
+committer, a dash, and the abbreviated 7-digit commit ID.
+
+The idea is to sort the bundles by ascending commit timestamp and then 
+choose the earliest commit not yet present in the local repository 
+clone. This git bundle and all newer ones can then be imported with 
+"git pull".

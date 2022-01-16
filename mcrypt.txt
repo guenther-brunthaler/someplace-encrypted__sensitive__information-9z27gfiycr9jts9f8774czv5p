@@ -1,0 +1,30 @@
+-a (algo):
+twofish #16$32: cbc cfb ctr ecb ncfb nofb ofb 
+arcfour #1$256: stream 
+rijndael-128 #16$32: cbc cfb ctr ecb ncfb nofb ofb 
+serpent #16$32: cbc cfb ctr ecb ncfb nofb ofb 
+xtea #8$16: cbc cfb ctr ecb ncfb nofb ofb 
+blowfish #8$56: cbc cfb ctr ecb ncfb nofb ofb 
+tripledes #8$24: cbc cfb ctr ecb ncfb nofb ofb 
+
+padding size: 16 bytes
+last byte of last block contains # of partial bytes in last block (0..255), unused rest filled with random numbers
+
+--noiv: first data block used EBC
+
+-m:
+cbc
+
+-h:
+ripemd160 
+
+-o:
+hex
+
+-b
+(bare)
+
+-f
+(keyfile)
+
+MAC(K1, K2, m) = H(K1 concat H(K2 concat m))
