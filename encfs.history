@@ -1,7 +1,0 @@
-# Unlock the nested EncFS filesystems.
-o=$PWD
-k=~/p/p2/p3/p4/rpo-git-keys
-p=$k/sensitive/onion4.psw encfs --extpass 'tr -d "\\n" < "$p"' -c onion4-encfs6.xml "$PWD"/onion4.encfs "$PWD"/onion4
-p=$k/sensitive/onion3.psw encfs --extpass 'tr -d "\\n" < "$p"' -c onion3-encfs6.xml "$PWD"/onion4 "$PWD"/onion3
-p=$k/sensitive/onion2.psw encfs --extpass 'tr -d "\\n" < "$p"' -c onion2-encfs6.xml "$PWD"/onion3 "$PWD"/onion2
-p=$k/sensitive/onion1.psw encfs --extpass 'tr -d "\\n" < "$p"' -c onion1-encfs6.xml "$PWD"/onion2 "$PWD"/onion1
