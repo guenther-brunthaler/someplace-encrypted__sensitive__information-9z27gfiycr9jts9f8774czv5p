@@ -1,5 +1,5 @@
 #! /bin/sh
-# v2022.30
+# v2022.30.1
 
 enc_pfx=onion
 enc_sfx=.encfs
@@ -33,11 +33,6 @@ do
 	esac
 done
 shift `expr $OPTIND - 1 || :`
-
-test "$psw" || {
-	echo "Export path to the password file as \$psw first!" >& 2
-	false || exit
-}
 
 canon() {
 	readlink -f -- "$1"
@@ -88,6 +83,11 @@ then
 	done
 	$verbose && echo "$n volumes have been unmounted." >& 2 || :
 else
+
+	test "$psw" || {
+		echo "Export path to the password file as \$psw first!" >& 2
+		false || exit
+	}
 	test -f "$psw"
 	test -f "$pwf_tgz_gbo"
 	"$gbo" -d "$psw" < "$pwf_tgz_gbo" | tar -C "$TD" -xz
