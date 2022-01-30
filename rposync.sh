@@ -1,5 +1,5 @@
 #! /bin/sh
-# v2022.29
+# v2022.30
 
 set -e
 cleanup() {
@@ -74,7 +74,7 @@ test `
 	false || exit
 }
 
-lc=`cd -- "$repo" && git log -n 1 --oneline | cut -d ' ' -f 1`
+lc=`cd -- "$repo" && git log -n 1 --oneline | cut -d ' ' -f 1 | cut -c -7`
 lb=`
 	{ cd -- "$repo" && git cat-file -p HEAD; } \
 	| awk '$1 == "committer" {print $(NF - 1); exit}'
