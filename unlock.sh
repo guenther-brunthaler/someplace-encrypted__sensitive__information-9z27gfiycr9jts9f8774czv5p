@@ -1,5 +1,5 @@
 #! /bin/sh
-# v2022.29
+# v2022.30
 
 enc_pfx=onion
 enc_sfx=.encfs
@@ -34,8 +34,8 @@ do
 done
 shift `expr $OPTIND - 1 || :`
 
-test "$esi" || {
-	echo "Export path to the password file as \$esi first!" >& 2
+test "$psw" || {
+	echo "Export path to the password file as \$psw first!" >& 2
 	false || exit
 }
 
@@ -88,9 +88,9 @@ then
 	done
 	$verbose && echo "$n volumes have been unmounted." >& 2 || :
 else
-	test -f "$esi"
+	test -f "$psw"
 	test -f "$pwf_tgz_gbo"
-	"$gbo" -d "$esi" < "$pwf_tgz_gbo" | tar -C "$TD" -xz
+	"$gbo" -d "$psw" < "$pwf_tgz_gbo" | tar -C "$TD" -xz
 	L= i=$n
 	while :
 	do
