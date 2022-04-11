@@ -1,5 +1,5 @@
 #! /bin/sh
-# v2022.30
+# v2022.101
 
 set -e
 cleanup() {
@@ -12,9 +12,11 @@ TD=
 trap 'exit $?' HUP TERM INT QUIT
 
 verbose=false
-while getopts v opt
+force=false
+while getopts vf opt
 do
 	case $opt in
+		f) force=true;;
 		v) verbose=true;;
 		*) false || exit
 	esac
@@ -70,8 +72,10 @@ test `
 	cd -- "$repo" && git status -s > "$TD"/log && wc -l < "$TD"/log
 ` = 0 || {
 	cat < "$TD"/log >& 2
-	echo "Please commit uncommited changes in '$repo' first!" >& 2
-	false || exit
+	$force || {
+		echo "Please commit uncommited changes in '$repo' first!" >& 2
+		false || exit
+	}
 }
 
 lc=`cd -- "$repo" && git log -n 1 --oneline | cut -d ' ' -f 1 | cut -c -7`
